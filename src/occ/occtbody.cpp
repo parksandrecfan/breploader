@@ -476,8 +476,8 @@ void OCCTBody::debug() {
         0, 1, 0, 0.0,
         0, 0, 1, 0.0,
         0, 0, 0, 0.5;
-    err = Transform(xfrm);
-    std::cout << "xfrm error = " << err << std::endl;
+    // err = Transform(xfrm);
+    // std::cout << "xfrm error = " << err << std::endl;
     auto topo_xfrmed = GetTopology();
     auto mass_xfrmed = GetMassProperties();
 
