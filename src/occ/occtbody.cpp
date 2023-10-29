@@ -185,12 +185,12 @@ BREPTopology OCCTBody::GetTopology() {
                 TopoDS_Edge edge = wire_explorer.Current();
                 TopAbs_Orientation orientation = wire_explorer.Orientation();
                 child = topology.pk_to_idx[_shape_to_idx[edge]];
-                //PK_TOPOL_sense_t sense =
+                // PK_TOPOL_sense_t sense =
                 //    orientation == TopAbs_FORWARD ? PK_TOPOL_sense_positive_c :
                 //    orientation == TopAbs_REVERSED ? PK_TOPOL_sense_negative_c :
                 //    PK_TOPOL_sense_none_c;
 
-                topology.loop_to_edge.emplace_back(parent, child, sense);
+                // topology.loop_to_edge.emplace_back(parent, child, sense);
                 loop_to_edges[parent].push_back(child);
 
                 wire_explorer.Next();
