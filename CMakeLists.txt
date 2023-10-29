@@ -46,7 +46,6 @@ target_include_directories(breploader PRIVATE
 )
 
 target_link_libraries(breploader PUBLIC 
-  parasolid_frustrum 
   Eigen3::Eigen 
   TKernel 
   TKXSBase 
