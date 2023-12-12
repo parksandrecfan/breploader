@@ -76,6 +76,7 @@ BREPTopology OCCTBody::GetTopology() {
     BREPTopology topology;
 
     std::map<int, int> cat_idx;
+    std::map<int, TopologyType> topology.pk_to_class;
 
     TopTools_IndexedDataMapOfShapeListOfShape edge_face_map;
     TopExp::MapShapesAndAncestors(_shape, TopAbs_EDGE, TopAbs_FACE, edge_face_map);
@@ -96,21 +97,25 @@ BREPTopology OCCTBody::GetTopology() {
         switch (subshape.ShapeType()) {
         case TopAbs_FACE:
             //topology.pk_to_class[idx] = PK_CLASS_face;
+            topology.pk_to_class[idx] = FACE;
             cat_idx[i] = topology.faces.size();
             topology.faces.emplace_back(new OCCTFace(subshape));
             break;
         case TopAbs_WIRE:
             //topology.pk_to_class[idx] = PK_CLASS_loop;
+            topology.pk_to_class[idx] = LOOP;
             cat_idx[i] = topology.loops.size();
             topology.loops.emplace_back(new OCCTLoop(subshape, loop_face_map.FindFromKey(subshape)));
             break;
         case TopAbs_EDGE:
             //topology.pk_to_class[idx] = PK_CLASS_edge;
+            topology.pk_to_class[idx] = EDGE;
             cat_idx[i] = topology.edges.size();
             topology.edges.emplace_back(new OCCTEdge(subshape, edge_face_map.FindFromKey(subshape)));
             break;
         case TopAbs_VERTEX:
             //topology.pk_to_class[idx] = PK_CLASS_vertex;
+            topology.pk_to_class[idx] = VERTEX;
             cat_idx[i] = topology.vertices.size();
             topology.vertices.emplace_back(new OCCTVertex(subshape));
             break;
