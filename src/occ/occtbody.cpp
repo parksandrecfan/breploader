@@ -78,6 +78,12 @@ BREPTopology OCCTBody::GetTopology() {
 
     std::map<int, int> cat_idx;
     // std::map<int, TopologyType> topology.pk_to_class; in topology.h
+    enum class TopologyType {
+    FACE,
+    EDGE,
+    VERTEX,
+    LOOP
+    };
 
     TopTools_IndexedDataMapOfShapeListOfShape edge_face_map;
     TopExp::MapShapesAndAncestors(_shape, TopAbs_EDGE, TopAbs_FACE, edge_face_map);
