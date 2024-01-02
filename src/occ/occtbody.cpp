@@ -84,6 +84,7 @@ BREPTopology OCCTBody::GetTopology() {
     VERTEX,
     LOOP
     };
+    hahaha
 
     TopTools_IndexedDataMapOfShapeListOfShape edge_face_map;
     TopExp::MapShapesAndAncestors(_shape, TopAbs_EDGE, TopAbs_FACE, edge_face_map);
