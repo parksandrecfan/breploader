@@ -8,14 +8,6 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 find_package(Eigen3 REQUIRED)
 find_package(OpenCASCADE REQUIRED)
 
-include(FetchContent)
-FetchContent_Declare(
-  ps_frustrum
-  GIT_REPOSITORY   https://github.com/deGravity/parasolid_frustrum.git
-  GIT_TAG   v1.0
-)
-
-FetchContent_MakeAvailable(ps_frustrum)
 
 set(HEADERS 
   ${CMAKE_CURRENT_SOURCE_DIR}/include/body.h
@@ -36,13 +28,7 @@ set(OCCT_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/occ/occtloop.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/occ/occtvertex.cpp
 )
-set(PS_SOURCES 
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/ps/psbody.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/ps/psedge.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/ps/psface.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/ps/psloop.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/ps/psvertex.cpp
-)
+
 
 add_library(breploader 
   ${SOURCES}
@@ -60,7 +46,6 @@ target_include_directories(breploader PRIVATE
 )
 
 target_link_libraries(breploader PUBLIC 
-  parasolid_frustrum 
   Eigen3::Eigen 
   TKernel 
   TKXSBase 

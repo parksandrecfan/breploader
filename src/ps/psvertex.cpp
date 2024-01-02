@@ -1,6 +1,6 @@
 #include <vertex.h>
 
-#include <parasolid.h>
+// #include <parasolid.h>
 
 namespace pspy {
 
