@@ -1,5 +1,4 @@
 #include <body.h>
-#include <types.h>
 
 #include <set>
 #include <map>
@@ -77,7 +76,6 @@ BREPTopology OCCTBody::GetTopology() {
     BREPTopology topology;
 
     std::map<int, int> cat_idx;
-    // std::map<int, TopologyType> topology.pk_to_class; in topology.h
 
     TopTools_IndexedDataMapOfShapeListOfShape edge_face_map;
     TopExp::MapShapesAndAncestors(_shape, TopAbs_EDGE, TopAbs_FACE, edge_face_map);
@@ -97,34 +95,22 @@ BREPTopology OCCTBody::GetTopology() {
 
         switch (subshape.ShapeType()) {
         case TopAbs_FACE:
-            // topology.pk_to_class[idx] = PK_CLASS_face;
-            topology.pk_to_class[idx] = TopologyType::FACE;
-            // topology.pk_to_class[idx] = 0;
-            // topology.pk_to_class[idx] = FACE;
+            topology.pk_to_class[idx] = PK_CLASS_face;
             cat_idx[i] = topology.faces.size();
             topology.faces.emplace_back(new OCCTFace(subshape));
             break;
         case TopAbs_WIRE:
-            //topology.pk_to_class[idx] = PK_CLASS_loop;
-            topology.pk_to_class[idx] = TopologyType::LOOP;
-            // topology.pk_to_class[idx] = 3;
-            // topology.pk_to_class[idx] = LOOP;
+            topology.pk_to_class[idx] = PK_CLASS_loop;
             cat_idx[i] = topology.loops.size();
             topology.loops.emplace_back(new OCCTLoop(subshape, loop_face_map.FindFromKey(subshape)));
             break;
         case TopAbs_EDGE:
-            //topology.pk_to_class[idx] = PK_CLASS_edge;
-            topology.pk_to_class[idx] = TopologyType::EDGE;
-            // topology.pk_to_class[idx] = 1;
-            // topology.pk_to_class[idx] = EDGE;
+            topology.pk_to_class[idx] = PK_CLASS_edge;
             cat_idx[i] = topology.edges.size();
             topology.edges.emplace_back(new OCCTEdge(subshape, edge_face_map.FindFromKey(subshape)));
             break;
         case TopAbs_VERTEX:
-            //topology.pk_to_class[idx] = PK_CLASS_vertex;
-            topology.pk_to_class[idx] = TopologyType::VERTEX;
-            // topology.pk_to_class[idx] = VERTEX;
-            // topology.pk_to_class[idx] = 2;
+            topology.pk_to_class[idx] = PK_CLASS_vertex;
             cat_idx[i] = topology.vertices.size();
             topology.vertices.emplace_back(new OCCTVertex(subshape));
             break;
@@ -162,7 +148,7 @@ BREPTopology OCCTBody::GetTopology() {
                 TopoDS_Shape wire = explorer.Current();
                 child = topology.pk_to_idx[_shape_to_idx[wire]];
 
-                // topology.face_to_loop.emplace_back(parent, child, PK_TOPOL_sense_none_c);
+                topology.face_to_loop.emplace_back(parent, child, PK_TOPOL_sense_none_c);
                 face_to_loops[parent].push_back(child);
 
                 explorer.Next();
@@ -199,12 +185,12 @@ BREPTopology OCCTBody::GetTopology() {
                 TopoDS_Edge edge = wire_explorer.Current();
                 TopAbs_Orientation orientation = wire_explorer.Orientation();
                 child = topology.pk_to_idx[_shape_to_idx[edge]];
-                // PK_TOPOL_sense_t sense =
-                //    orientation == TopAbs_FORWARD ? PK_TOPOL_sense_positive_c :
-                //    orientation == TopAbs_REVERSED ? PK_TOPOL_sense_negative_c :
-                //    PK_TOPOL_sense_none_c;
+                PK_TOPOL_sense_t sense =
+                    orientation == TopAbs_FORWARD ? PK_TOPOL_sense_positive_c :
+                    orientation == TopAbs_REVERSED ? PK_TOPOL_sense_negative_c :
+                    PK_TOPOL_sense_none_c;
 
-                // topology.loop_to_edge.emplace_back(parent, child, sense);
+                topology.loop_to_edge.emplace_back(parent, child, sense);
                 loop_to_edges[parent].push_back(child);
 
                 wire_explorer.Next();
@@ -228,7 +214,7 @@ BREPTopology OCCTBody::GetTopology() {
                 TopoDS_Shape vertex = explorer.Current();
                 child = topology.pk_to_idx[_shape_to_idx[vertex]];
 
-                // topology.edge_to_vertex.emplace_back(parent, child, PK_TOPOL_sense_none_c);
+                topology.edge_to_vertex.emplace_back(parent, child, PK_TOPOL_sense_none_c);
                 edge_to_vertices[parent].push_back(child);
 
                 explorer.Next();
@@ -478,7 +464,7 @@ void OCCTBody::Tesselate(
 }
 
 void OCCTBody::debug() {
-    // PK_ERROR_t err = PK_ERROR_no_errors;
+    PK_ERROR_t err = PK_ERROR_no_errors;
     TopAbs_ShapeEnum entity_class = _shape.ShapeType();
     std::cout << entity_class << std::endl;
     auto topo = GetTopology();
@@ -490,8 +476,8 @@ void OCCTBody::debug() {
         0, 1, 0, 0.0,
         0, 0, 1, 0.0,
         0, 0, 0, 0.5;
-    // err = Transform(xfrm);
-    // std::cout << "xfrm error = " << err << std::endl;
+    err = Transform(xfrm);
+    std::cout << "xfrm error = " << err << std::endl;
     auto topo_xfrmed = GetTopology();
     auto mass_xfrmed = GetMassProperties();
 

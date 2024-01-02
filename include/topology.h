@@ -5,7 +5,6 @@
 #include "loop.h"
 #include "edge.h"
 #include "vertex.h"
-#include "types.h"
 
 #include <map>
 #include <vector>
@@ -33,18 +32,17 @@ struct TopoRelation {
     TopoRelation(int parent, int child, int sense) {
         _parent = parent;
         _child = child;
-        _sense = TopoRelationSense::None;
-        //switch (sense) {
-        //case PK_TOPOL_sense_negative_c:
-        //    _sense = TopoRelationSense::Negative;
-        //    break;
-        //case PK_TOPOL_sense_positive_c:
-        //    _sense = TopoRelationSense::Positive;
-        //    break;
-        //default:
-        //    _sense = TopoRelationSense::None;
-        //    break;
-        //}
+        switch (sense) {
+        case PK_TOPOL_sense_negative_c:
+            _sense = TopoRelationSense::Negative;
+            break;
+        case PK_TOPOL_sense_positive_c:
+            _sense = TopoRelationSense::Positive;
+            break;
+        default:
+            _sense = TopoRelationSense::None;
+            break;
+        }
     }
 
     int _parent;
@@ -88,7 +86,7 @@ struct BREPTopology {
     std::map<int, int> pk_to_idx;
     // Parasolid Entity Id -> Parasolid Class
     // PK_CLASS_face/loop/edge/vertex
-    std::map<int, TopologyType> pk_to_class;
+    std::map<int, int> pk_to_class;
 };
 
 }
