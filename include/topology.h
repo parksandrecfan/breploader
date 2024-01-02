@@ -88,7 +88,7 @@ struct BREPTopology {
     std::map<int, int> pk_to_idx;
     // Parasolid Entity Id -> Parasolid Class
     // PK_CLASS_face/loop/edge/vertex
-    std::map<int, TopologyType> pk_to_class;
+    std::map<int, int> pk_to_class;
 };
 
 }
