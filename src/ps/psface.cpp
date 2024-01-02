@@ -2,7 +2,7 @@
 
 #include <neoflann.h>
 
-//#include <parasolid.h>
+#include <parasolid.h>
 #include <assert.h>
 #include <algorithm>
 #include <numeric>

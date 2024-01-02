@@ -1,7 +1,7 @@
 #ifndef BODY_H_INCLUDED
 #define BODY_H_INCLUDED 1
 
-// #include <parasolid.h>
+#include <parasolid.h>
 #include <TopoDS_Shape.hxx>
 #include "face.h"
 #include "loop.h"

@@ -1,6 +1,6 @@
 #include <edge.h>
 
-// #include <parasolid.h>
+#include <parasolid.h>
 #include <assert.h>
 #include <float.h>
 
